@@ -1,7 +1,7 @@
 public class Notebook extends Product {
 
     private static int counter = 0;
-    public int id;
+    private final int id;
     private int ram;
 
     public Notebook(String name, double price, Brand brand, int storage, double screenSize, int ram) {
