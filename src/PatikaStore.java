@@ -4,7 +4,8 @@ public class PatikaStore {
 
     Scanner input = new Scanner(System.in);
     private static final TreeSet<Brand> brandTreeSet = new TreeSet<>(new BrandComparator());
-    private Set<Notebook> notebookSet;
+    private static final TreeSet<Notebook> notebookIdTreeSet = new TreeSet<>(new NotebookIdComparator());
+    private static final TreeSet<Notebook> notebookNameTreeSet = new TreeSet<>(new NotebookNameComparator());
     private String newName;
 
     static {
@@ -17,6 +18,12 @@ public class PatikaStore {
         brandTreeSet.add(new Brand("HP"));
         brandTreeSet.add(new Brand("Xiaomi"));
         brandTreeSet.add(new Brand("Monster"));
+    }
+
+    static {
+        notebookIdTreeSet.add(new Notebook("HUAWEI Matebook 14 ",7000.0,new Brand("Huawei"),512,14.0,16));
+        notebookIdTreeSet.add(new Notebook("LENOVO V14 IGL ",3699.0,new Brand("Lenovo"),1024,14.0,8));
+        notebookIdTreeSet.add(new Notebook("ASUS Tuf Gaming  ",8199.0,new Brand("Asus"),2048,15.6,32));
     }
 
     static void printBrand() {
@@ -40,7 +47,8 @@ public class PatikaStore {
             switch (menuChoice) {
                 case 1:
                     //Notebook
-                    getNotebook();
+                    printNotebookById();
+                    crudNotebook();
                     break;
                 case 2:
                     //Cep telefonu
@@ -63,15 +71,7 @@ public class PatikaStore {
         }
     }
 
-    void getNotebook() {
-        notebookSet = new LinkedHashSet<>();
-        notebookSet.add(new Notebook("HUAWEI Matebook 14 ",7000.0,new Brand("Huawei"),512,14.0,16));
-        notebookSet.add(new Notebook("LENOVO V14 IGL ",3699.0,new Brand("Lenovo"),1024,14.0,8));
-        notebookSet.add(new Notebook("ASUS Tuf Gaming  ",8199.0,new Brand("Asus"),2048,15.6,32));
-        printNotebook(notebookSet);
-    }
-
-    void printNotebook(Set<Notebook> set) {
+    private void printNotebookById() {
         String format = "| %-2s | %-30s | %-8s | %-10s | %-10s | %-10s | %-10s |%n";
         String line = "------------------------------------------------------------------------------------------------------------";
 
@@ -79,12 +79,12 @@ public class PatikaStore {
         System.out.printf(format, "ID", "Ürün Adı", "Fiyat", "Marka", "Depolama", "Ekran", "RAM");
         System.out.println(line);
 
-        for (Notebook n : set) {
+        for (Notebook n : notebookIdTreeSet) {
             System.out.printf(
                     format,
-                    Notebook.id,
+                    n.getId(),
                     n.getName(),
-                    n.getPrice() + "TL",
+                    n.getPrice() + " TL",
                     n.getBrand().getName(),
                     n.getStorage(),
                     n.getScreenSize(),
@@ -95,22 +95,61 @@ public class PatikaStore {
         System.out.println(line);
     }
 
-    void crudProduct() {
-        int crudChoice = input.nextInt();
-        System.out.println("Urun eklemek icin 1 basiniz.");
-        System.out.println("Urun silmek icin 2 basiniz.");
-        System.out.println("Cikmak için 0 basiniz.");
-        switch (crudChoice) {
-            case 1:
-                add();
-            case 2:
+    private void printNotebookByName() {
+        String format = "| %-2s | %-30s | %-8s | %-10s | %-10s | %-10s | %-10s |%n";
+        String line = "------------------------------------------------------------------------------------------------------------";
 
+        System.out.println(line);
+        System.out.printf(format, "ID", "Ürün Adı", "Fiyat", "Marka", "Depolama", "Ekran", "RAM");
+        System.out.println(line);
+
+        for (Notebook n : PatikaStore.notebookNameTreeSet) {
+            System.out.printf(
+                    format,
+                    n.getId(),
+                    n.getName(),
+                    n.getPrice() + " TL",
+                    n.getBrand().getName(),
+                    n.getStorage(),
+                    n.getScreenSize(),
+                    n.getRam()
+            );
+        }
+
+        System.out.println(line);
+    }
+
+    private void crudNotebook() {
+        boolean isExit = false;
+        while (!isExit) {
+            System.out.println("Urun eklemek icin 1 basiniz.\nUrun silmek icin 2 basiniz.\nUrun filtrelemek icin 3 basiniz.\nCikmak için 0 basiniz.");
+            int crudChoice = input.nextInt();
+            input.nextLine();
+            switch (crudChoice) {
+                case 1:
+                    addNotebook();
+                    break;
+                case 2:
+                    deleteNotebook();
+                    break;
+                case 3:
+                    filterNotebook();
+                    break;
+                case 0:
+                    isExit = true;
+                    break;
+                default:
+                    System.out.println("Please enter valid data!");
+                    crudNotebook();
+                    return;
+            }
         }
     }
 
-    void add() {
+    // This method add new notebook
+    private void addNotebook() {
         System.out.print("Urun adi girin: ");
-        newName = input.nextLine();
+        newName = input.nextLine();    // Brand name should come first in newName!!!
         System.out.print("Urun fiyati girin: ");
         double newPrice = input.nextDouble();
         Brand newBrand = new Brand(getBrandName());
@@ -120,10 +159,78 @@ public class PatikaStore {
         double newScreenSize = input.nextDouble();
         System.out.print("Urun ram'ini girin: ");
         int newRam = input.nextInt();
-        Notebook newNotebook = new Notebook(newName,newPrice,newBrand,newStorage,newScreenSize,newRam);
-        notebookSet.add(newNotebook);
+
+        if (isMatch(newBrand.getName())) {
+            Notebook newNotebook = new Notebook(newName,newPrice,newBrand,newStorage,newScreenSize,newRam);
+            notebookIdTreeSet.add(newNotebook);
+            notebookNameTreeSet.add(newNotebook);
+            System.out.println("New product added succesfully!");
+        } else {
+            System.out.println("Böyle bir marka bulunmadığı için ürün eklenememiştir!");
+        }
+
+        printNotebookById();
     }
 
+    private void deleteNotebook() {
+        if (notebookIdTreeSet.isEmpty()) {
+            System.out.println("Silenecek bir ürün bulunmamaktadır!");
+        } else {
+            printNotebookById();
+            System.out.println("Silmek istediğiniz ürünün id'sini giriniz");
+            int deleteId = input.nextInt();
+
+            Notebook removeNotebook = null;
+            for (Notebook notebook : notebookIdTreeSet) {
+                if (notebook.getId() == deleteId) {
+                    removeNotebook = notebook;
+                    break;
+                }
+            }
+
+            if (removeNotebook != null) {
+                notebookIdTreeSet.remove(removeNotebook);
+                notebookNameTreeSet.remove(removeNotebook);
+                System.out.println("Ürün başarıyla silindi.");
+            } else {
+                System.out.println("Böyle bir ürün bulunmamaktadır!");
+            }
+        }
+        printNotebookById();
+    }
+
+    private int sortChoose() {
+        System.out.println("1 - Sort by id\n2 - Sort by name\n3- Exit");
+        return input.nextInt();
+    }
+
+    private void filterNotebook() {
+        boolean isExit = false;
+        while (!isExit) {
+            switch (sortChoose()) {
+                case 1:
+                    printNotebookById();
+                    break;
+                case 2:
+                    sortByName();
+                    break;
+                case 3:
+                    isExit = true;
+                    break;
+                default:
+                    System.out.println("Please enter valid data.");
+                    filterNotebook();
+                    return;
+            }
+        }
+    }
+
+    private void sortByName() {
+        notebookNameTreeSet.addAll(notebookIdTreeSet);
+        printNotebookByName();
+    }
+
+    // This method returns first word in newName variable in addNotebook().
     private String getBrandName() {
         String brand="";
         Optional<String> optionalBrand = Arrays.stream(newName.split(" ")).findFirst();
@@ -131,6 +238,15 @@ public class PatikaStore {
             brand = optionalBrand.get().toLowerCase();
         }
         return brand.replace(brand.charAt(0), brand.toUpperCase().charAt(0));
+    }
+
+    private boolean isMatch(String brandName) {
+        for (Brand brand:brandTreeSet) {
+            if (brand.getName().equals(brandName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

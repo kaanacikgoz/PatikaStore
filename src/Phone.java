@@ -1,7 +1,5 @@
-
 public class Phone extends Product {
 
-    public static int id;
     private int camera;
     private double battery;
     private int ram;
@@ -10,7 +8,6 @@ public class Phone extends Product {
 
     public Phone(String name, double price, Brand brand, int storage, double screenSize, int camera, double battery, int ram, String color) {
         super(name, price, brand, storage, screenSize);
-        Phone.id++;
         this.camera = camera;
         this.battery =  battery;
         this.ram = ram;

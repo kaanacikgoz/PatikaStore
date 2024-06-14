@@ -14,10 +14,6 @@ public abstract class Product {
         this.screenSize = screenSize;
     }
 
-    static void add() {
-
-    }
-
     public String getName() {
         return name;
     }

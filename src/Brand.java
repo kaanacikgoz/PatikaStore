@@ -3,23 +3,23 @@ public class Brand {
     private int id;
     private String name;
 
-    Brand(String name) {
+    public Brand(String name) {
         this.name = name;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
-    void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
