@@ -47,7 +47,8 @@ public class PatikaStore {
             switch (menuChoice) {
                 case 1:
                     //Notebook
-                    printNotebookById();
+                    //printNotebookById();
+                    printNotebook(notebookIdTreeSet);
                     crudNotebook();
                     break;
                 case 2:
@@ -71,7 +72,7 @@ public class PatikaStore {
         }
     }
 
-    private void printNotebookById() {
+    private void printNotebook(Set<Notebook> whichSet) {
         String format = "| %-2s | %-30s | %-8s | %-10s | %-10s | %-10s | %-10s |%n";
         String line = "------------------------------------------------------------------------------------------------------------";
 
@@ -79,31 +80,7 @@ public class PatikaStore {
         System.out.printf(format, "ID", "Ürün Adı", "Fiyat", "Marka", "Depolama", "Ekran", "RAM");
         System.out.println(line);
 
-        for (Notebook n : notebookIdTreeSet) {
-            System.out.printf(
-                    format,
-                    n.getId(),
-                    n.getName(),
-                    n.getPrice() + " TL",
-                    n.getBrand().getName(),
-                    n.getStorage(),
-                    n.getScreenSize(),
-                    n.getRam()
-            );
-        }
-
-        System.out.println(line);
-    }
-
-    private void printNotebookByName() {
-        String format = "| %-2s | %-30s | %-8s | %-10s | %-10s | %-10s | %-10s |%n";
-        String line = "------------------------------------------------------------------------------------------------------------";
-
-        System.out.println(line);
-        System.out.printf(format, "ID", "Ürün Adı", "Fiyat", "Marka", "Depolama", "Ekran", "RAM");
-        System.out.println(line);
-
-        for (Notebook n : PatikaStore.notebookNameTreeSet) {
+        for (Notebook n : whichSet) {
             System.out.printf(
                     format,
                     n.getId(),
@@ -168,15 +145,14 @@ public class PatikaStore {
         } else {
             System.out.println("Böyle bir marka bulunmadığı için ürün eklenememiştir!");
         }
-
-        printNotebookById();
+        printNotebook(notebookIdTreeSet);
     }
 
     private void deleteNotebook() {
         if (notebookIdTreeSet.isEmpty()) {
             System.out.println("Silenecek bir ürün bulunmamaktadır!");
         } else {
-            printNotebookById();
+            printNotebook(notebookIdTreeSet);
             System.out.println("Silmek istediğiniz ürünün id'sini giriniz");
             int deleteId = input.nextInt();
 
@@ -196,7 +172,7 @@ public class PatikaStore {
                 System.out.println("Böyle bir ürün bulunmamaktadır!");
             }
         }
-        printNotebookById();
+        printNotebook(notebookIdTreeSet);
     }
 
     private int sortChoose() {
@@ -209,7 +185,7 @@ public class PatikaStore {
         while (!isExit) {
             switch (sortChoose()) {
                 case 1:
-                    printNotebookById();
+                    printNotebook(notebookIdTreeSet);
                     break;
                 case 2:
                     sortByName();
@@ -227,7 +203,7 @@ public class PatikaStore {
 
     private void sortByName() {
         notebookNameTreeSet.addAll(notebookIdTreeSet);
-        printNotebookByName();
+        printNotebook(notebookNameTreeSet);
     }
 
     // This method returns first word in newName variable in addNotebook().
