@@ -78,7 +78,7 @@ public class PatikaStore {
     }
 
     private void printNotebook(Set<Notebook> whichSet) {
-        String format = "| %-2s | %-30s | %-9s | %-10s | %-10s | %-10s | %-10s |%n";
+        String format = "| %-2s | %-30s | %-10s | %-10s | %-10s | %-10s | %-10s |%n";
         String line = "-------------------------------------------------------------------------------------------------------";
 
         System.out.println(line);
@@ -102,7 +102,7 @@ public class PatikaStore {
     }
 
     private void printPhone(Set<Phone> whichSet) {
-        String format = "| %-2s | %-30s | %-9s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s |%n";
+        String format = "| %-2s | %-30s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s |%n";
         String line = "----------------------------------------------------------------------------------------------------------------------------------------------";
 
         System.out.println(line);
@@ -208,26 +208,35 @@ public class PatikaStore {
 
     private void addPhone() {
         System.out.print("Urun adi girin: ");
-        newName = input.nextLine();    // Brand name should come first in newName!!!
+        String name = input.nextLine();
         System.out.print("Urun fiyati girin: ");
         double newPrice = input.nextDouble();
-        Brand newBrand = new Brand(getBrandName());
+        System.out.print("Marka ismi girin: ");
+        input.nextLine();
+        String brandName = input.nextLine();
+        Brand newBrand = new Brand(brandName);
         System.out.print("Urun depolamasi girin: ");
         int newStorage = input.nextInt();
         System.out.print("Urun ekrani girin: ");
         double newScreenSize = input.nextDouble();
+        System.out.print("Urun kamerasını girin: ");
+        int newCamera = input.nextInt();
+        System.out.print("Urun pilini girin: ");
+        double newBattery = input.nextDouble();
         System.out.print("Urun ram'ini girin: ");
         int newRam = input.nextInt();
+        System.out.print("Urun rengini girin: ");
+        String newColor = input.nextLine();
 
         if (isMatch(newBrand.getName())) {
-            Notebook newNotebook = new Notebook(newName,newPrice,newBrand,newStorage,newScreenSize,newRam);
-            notebookIdTreeSet.add(newNotebook);
-            notebookNameTreeSet.add(newNotebook);
+            Phone newPhone = new Phone(name,newPrice,newBrand,newStorage,newScreenSize,newCamera, newBattery, newRam, newColor);
+            phoneIdTreeSet.add(newPhone);
+            phoneNameTreeSet.add(newPhone);
             System.out.println("New product added succesfully!");
         } else {
             System.out.println("Böyle bir marka bulunmadığı için ürün eklenememiştir!");
         }
-        printNotebook(notebookIdTreeSet);
+        printPhone(phoneIdTreeSet);
     }
 
     private void deleteNotebook() {
@@ -258,30 +267,30 @@ public class PatikaStore {
     }
 
     private void deletePhone() {
-        if (notebookIdTreeSet.isEmpty()) {
+        if (phoneIdTreeSet.isEmpty()) {
             System.out.println("Silenecek bir ürün bulunmamaktadır!");
         } else {
-            printNotebook(notebookIdTreeSet);
+            printPhone(phoneIdTreeSet);
             System.out.println("Silmek istediğiniz ürünün id'sini giriniz");
             int deleteId = input.nextInt();
 
-            Notebook removeNotebook = null;
-            for (Notebook notebook : notebookIdTreeSet) {
-                if (notebook.getId() == deleteId) {
-                    removeNotebook = notebook;
+            Phone removePhone = null;
+            for (Phone phone : phoneIdTreeSet) {
+                if (phone.getId() == deleteId) {
+                    removePhone = phone;
                     break;
                 }
             }
 
-            if (removeNotebook != null) {
-                notebookIdTreeSet.remove(removeNotebook);
-                notebookNameTreeSet.remove(removeNotebook);
+            if (removePhone != null) {
+                phoneIdTreeSet.remove(removePhone);
+                phoneNameTreeSet.remove(removePhone);
                 System.out.println("Ürün başarıyla silindi.");
             } else {
                 System.out.println("Böyle bir ürün bulunmamaktadır!");
             }
         }
-        printNotebook(notebookIdTreeSet);
+        printPhone(phoneIdTreeSet);
     }
 
     private int sortChoose() {
