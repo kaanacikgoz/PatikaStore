@@ -225,6 +225,7 @@ public class PatikaStore {
         double newBattery = input.nextDouble();
         System.out.print("Urun ram'ini girin: ");
         int newRam = input.nextInt();
+        input.nextLine();
         System.out.print("Urun rengini girin: ");
         String newColor = input.nextLine();
 
@@ -306,7 +307,7 @@ public class PatikaStore {
                     printNotebook(notebookIdTreeSet);
                     break;
                 case 2:
-                    sortByName();
+                    sortByNameNotebook();
                     break;
                 case 3:
                     isExit = true;
@@ -324,25 +325,30 @@ public class PatikaStore {
         while (!isExit) {
             switch (sortChoose()) {
                 case 1:
-                    printNotebook(notebookIdTreeSet);
+                    printPhone(phoneIdTreeSet);
                     break;
                 case 2:
-                    sortByName();
+                    sortByNamePhone();
                     break;
                 case 3:
                     isExit = true;
                     break;
                 default:
                     System.out.println("Please enter valid data.");
-                    filterNotebook();
+                    filterPhone();
                     return;
             }
         }
     }
 
-    private void sortByName() {
+    private void sortByNameNotebook() {
         notebookNameTreeSet.addAll(notebookIdTreeSet);
         printNotebook(notebookNameTreeSet);
+    }
+
+    private void sortByNamePhone() {
+        phoneNameTreeSet.addAll(phoneIdTreeSet);
+        printPhone(phoneNameTreeSet);
     }
 
     // This method returns first word in newName variable in addNotebook().
